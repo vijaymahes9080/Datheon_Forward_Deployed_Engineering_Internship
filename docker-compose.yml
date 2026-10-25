@@ -1,0 +1,42 @@
+services:
+  aegis-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - AEGIS_HOST=0.0.0.0
+      - AEGIS_PORT=8000
+      - AEGIS_ENVIRONMENT=production
+      - AEGIS_LOG_LEVEL=INFO
+      - AEGIS_DATABASE_URL=sqlite:////app/storage/aegis.db
+      - AEGIS_CHROMA_PERSIST_DIR=/app/storage/chroma_db
+      - AEGIS_STORAGE_DIR=/app/storage/documents
+      - AEGIS_EMBEDDING_PROVIDER=mock
+      - AEGIS_LLM_PROVIDER=mock
+      - AEGIS_SIMILARITY_THRESHOLD=0.20
+    volumes:
+      - aegis_storage:/app/storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/live')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+
+volumes:
+  aegis_storage:
+    driver: local
