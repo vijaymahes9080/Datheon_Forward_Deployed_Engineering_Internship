@@ -67,11 +67,14 @@ class StructureAwareChunker:
             return []
 
         chunks: List[Chunk] = []
-        provenance_tag = (
-            f"p{passage.page_number}"
-            if passage.page_number is not None
-            else (passage.row_identifier or "sec")
-        )
+        if passage.page_number is not None:
+            provenance_tag = f"p{passage.page_number}"
+        elif passage.row_identifier:
+            provenance_tag = str(passage.row_identifier)
+        elif passage.metadata.get("section_index") is not None:
+            provenance_tag = f"sec{passage.metadata['section_index']}"
+        else:
+            provenance_tag = passage.passage_id.split("_")[-1]
 
         # If text fits comfortably in target size, keep as single coherent chunk
         if len(text) <= self.chunk_size:

@@ -64,7 +64,7 @@ class Settings(BaseSettings):
         default="cross-encoder/ms-marco-MiniLM-L-6-v2", description="Cross-encoder model for reranking"
     )
     SIMILARITY_THRESHOLD: float = Field(
-        default=0.35, description="Minimum cosine similarity score required for retrieval"
+        default=0.20, description="Minimum cosine similarity score required for retrieval"
     )
 
     # LLM Generation
