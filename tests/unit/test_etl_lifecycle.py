@@ -11,9 +11,11 @@ def setup_database():
 
 
 def test_document_deduplication():
+    import uuid
     pipeline = ETLPipeline()
+    unique_fn = f"dedup_test_{uuid.uuid4().hex[:6]}.md"
     item = IngestionItem(
-        filename="dedup_test.md",
+        filename=unique_fn,
         content_bytes=b"# Deduplication Test\nThis text is identical.",
         tenant_id="tenant_alpha",
         department="finance",

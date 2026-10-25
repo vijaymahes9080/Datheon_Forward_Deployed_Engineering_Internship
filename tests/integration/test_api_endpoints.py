@@ -91,10 +91,12 @@ def test_agent_action_and_approval_workflow(client: TestClient):
     assert inv_resp.json()["result"]["found"] is True
 
     # 2. Sensitive write: lead status update (requires approval)
+    import uuid
+    fresh_idem_key = f"lead-update-{uuid.uuid4().hex[:8]}"
     lead_req = {
         "operation": "lead_status_update",
         "arguments": {"lead_id": "LEAD-501", "new_status": "CLOSED_WON", "note": "Deal signed."},
-        "idempotency_key": "lead-update-tx-101",
+        "idempotency_key": fresh_idem_key,
     }
     lead_resp = client.post("/api/v1/agent/action", json=lead_req, headers=user_headers)
     assert lead_resp.status_code == 200
