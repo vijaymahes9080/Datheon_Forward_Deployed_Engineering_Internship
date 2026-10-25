@@ -94,8 +94,10 @@ def create_app() -> FastAPI:
 
     # Mount routers
     app.include_router(health.router)
-    from aegis.api.routes import ingest
+    from aegis.api.routes import ingest, search, rag
     app.include_router(ingest.router)
+    app.include_router(search.router)
+    app.include_router(rag.router)
 
     return app
 
