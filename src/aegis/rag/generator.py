@@ -68,6 +68,14 @@ class DeterministicGroundedLLMAdapter(BaseLLMAdapter):
         re.DOTALL,
     )
 
+    STOP_WORDS = {
+        "what", "where", "when", "which", "who", "whom", "this", "that", "these", "those",
+        "have", "has", "had", "does", "done", "will", "would", "shall", "should", "tell",
+        "about", "from", "with", "into", "during", "before", "after", "above", "below",
+        "rules", "rule", "policy", "policies", "overview", "document", "information",
+        "answer", "with", "citations", "user", "query", "please", "state", "give"
+    }
+
     def generate(
         self,
         prompt: str,
@@ -80,7 +88,10 @@ class DeterministicGroundedLLMAdapter(BaseLLMAdapter):
             return "INSUFFICIENT_AUTHORIZED_EVIDENCE: No factual context provided."
 
         query_line = prompt.split("User Query:")[-1].strip() if "User Query:" in prompt else prompt
-        query_terms = set(re.findall(r"\b\w{3,}\b", query_line.lower()))
+        raw_query_terms = set(re.findall(r"\b\w{3,}\b", query_line.lower()))
+        query_terms = raw_query_terms - self.STOP_WORDS
+        if not query_terms:
+            query_terms = raw_query_terms
 
         best_passage = None
         best_source = None

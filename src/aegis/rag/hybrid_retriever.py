@@ -108,7 +108,7 @@ class HybridRetriever:
 
         allowed_depts = self._resolve_allowed_departments(user)
 
-        # 1. Vector Search (dense embeddings)
+        # 1. Vector Search (dense embeddings) with minimum similarity threshold
         query_vec = self.vector_store.embedding_provider.embed_text(query)
         dense_candidates = self.vector_store.search(
             query_vector=query_vec,
@@ -116,7 +116,7 @@ class HybridRetriever:
             allowed_departments=allowed_depts,
             max_clearance=user.clearance_level,
             top_k=top_k * 3,
-            min_score=0.0,
+            min_score=self.min_similarity,
         )
 
         if not dense_candidates:
