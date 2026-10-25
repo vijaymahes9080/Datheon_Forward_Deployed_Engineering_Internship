@@ -82,12 +82,17 @@ class DeterministicGroundedLLMAdapter(BaseLLMAdapter):
         system_prompt: Optional[str] = None,
         temperature: float = 0.0,
     ) -> str:
-        # Extract evidence blocks from prompt
-        matches = self.EVIDENCE_BLOCK_REGEX.findall(prompt)
+        # Separate context evidence from the user query
+        if "User Query:" in prompt:
+            context_part, query_part = prompt.split("User Query:", 1)
+        else:
+            context_part, query_part = prompt, prompt
+
+        matches = self.EVIDENCE_BLOCK_REGEX.findall(context_part)
         if not matches:
             return "INSUFFICIENT_AUTHORIZED_EVIDENCE: No factual context provided."
 
-        query_line = prompt.split("User Query:")[-1].strip() if "User Query:" in prompt else prompt
+        query_line = query_part.strip()
         raw_query_terms = set(re.findall(r"\b\w{3,}\b", query_line.lower()))
         query_terms = raw_query_terms - self.STOP_WORDS
         if not query_terms:
@@ -98,17 +103,24 @@ class DeterministicGroundedLLMAdapter(BaseLLMAdapter):
         best_prov = None
         best_score = 0
 
+        # Compute overlap and ensure substantive topical match
+        min_required_overlap = min(2, len(query_terms))
+        min_overlap_ratio = 0.30
+
         for source_fn, prov_str, passage_text in matches:
             passage_terms = set(re.findall(r"\b\w{3,}\b", passage_text.lower()))
             overlap = len(query_terms.intersection(passage_terms))
-            if overlap > best_score:
-                best_score = overlap
-                best_passage = passage_text.strip()
-                best_source = source_fn.strip()
-                best_prov = prov_str.strip()
+            overlap_ratio = overlap / max(1, len(query_terms))
 
-        # If zero meaningful keyword overlap or query asks about unanswerable topics
-        if best_score < 1 or best_passage is None:
+            if overlap >= min_required_overlap and overlap_ratio >= min_overlap_ratio:
+                if overlap > best_score:
+                    best_score = overlap
+                    best_passage = passage_text.strip()
+                    best_source = source_fn.strip()
+                    best_prov = prov_str.strip()
+
+        # If evidence lacks substantive coverage of the query's core terms, safely abstain
+        if best_passage is None:
             return "INSUFFICIENT_AUTHORIZED_EVIDENCE: The retrieved documents do not contain evidence to answer this question."
 
         # Parse page or row for strict citation formatting

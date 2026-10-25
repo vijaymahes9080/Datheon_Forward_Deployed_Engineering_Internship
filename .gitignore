@@ -55,3 +55,13 @@ storage/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs & Diagnostics
+*.log
+logs/
+
+# Type Checking & Linting
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
