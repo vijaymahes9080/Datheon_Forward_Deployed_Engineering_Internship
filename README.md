@@ -8,9 +8,12 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Cosine_Vector_Store-FF6F61?style=for-the-badge)](https://www.trychroma.com/)
 [![Docker](https://img.shields.io/badge/Docker-Non--Root_Hardened-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://vijaymahes9080.github.io/Datheon_Forward_Deployed_Engineering_Internship/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
 
 **A production-grade, zero-trust AI integration engine connecting unstructured corporate knowledge (PDF, CSV, Markdown) to business ERP/CRM workflows with pre-retrieval authorization, citation-grounded RAG, and human-in-the-loop approvals.**
+
+🌐 **[Launch Live Interactive Web Portal](https://vijaymahes9080.github.io/Datheon_Forward_Deployed_Engineering_Internship/)**
 
 [Architecture Deep Dive](ARCHITECTURE.md) • [Security Controls](SECURITY.md) • [Threat Model](THREAT_MODEL.md) • [API Guide](API_GUIDE.md) • [Operations Runbook](OPERATIONS_RUNBOOK.md)
 
@@ -163,6 +166,26 @@ The platform underwent automated benchmark evaluation against multi-tenant finan
 | **Automated Test Suite** | **20 / 20 PASS** | 100.0% | **EXCEEDED** |
 
 *See full details in [BENCHMARK_REPORT.md](BENCHMARK_REPORT.md) and [TEST_REPORT.md](TEST_REPORT.md).*
+
+---
+
+## Live Interactive Web Portal & GitHub Pages
+
+An interactive, zero-dependency client-side portal is hosted live on GitHub Pages:
+🔗 **[Launch AegisAI Interactive Gateway](https://vijaymahes9080.github.io/Datheon_Forward_Deployed_Engineering_Internship/)**
+
+### Interactive In-Browser Features:
+- **Module 1 (ETL Sandbox)**: Structure-aware extraction (PDF page provenance, CSV row IDs, Markdown breadcrumbs) and SHA-256 deduplication simulation.
+- **Module 2 (Zero-Trust RAG)**: Multi-tenant security context switcher (User Alice vs Bob vs Charlie) demonstrating pre-retrieval `$and` boundary filtering, hybrid BM25 + dense ranking, citation grounding verification, and safe abstention (`INSUFFICIENT_AUTHORIZED_EVIDENCE`).
+- **Module 3 (Policy-Governed Agent)**: 9-stage pipeline animation, cryptographic argument binding (`SHA-256`), 15-minute countdown TTL, and anti-replay nonce detection.
+- **Module 4 (Observability)**: Live Prometheus gauges, Kubernetes health check probes (`/health/live`, `/health/ready`), and API diagnostics.
+- **Verification Matrix**: Visual 20-gate automated test audit and empirical SLA comparison.
+
+### GitHub Pages Configuration:
+- **Source**: `Deploy from a branch`
+- **Branch**: `main`
+- **Folder**: `/docs`
+- **Automated CI**: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) validates all 20 test gates and web assets on every push.
 
 ---
 

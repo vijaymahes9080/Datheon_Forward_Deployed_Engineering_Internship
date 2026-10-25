@@ -1,0 +1,39 @@
+name: Automated CI & Gate Verification
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install System & Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pytest pytest-asyncio prometheus_client
+
+      - name: Run Complete Test Suite (20 Test Gates)
+        run: |
+          pytest tests -v --tb=short
+
+      - name: Verify Web Portal Assets
+        run: |
+          test -f docs/index.html || { echo "docs/index.html missing"; exit 1; }
+          test -f docs/styles.css || { echo "docs/styles.css missing"; exit 1; }
+          test -f docs/app.js || { echo "docs/app.js missing"; exit 1; }
+          test -f docs/assets/aegis_hero_banner.png || { echo "Hero banner asset missing"; exit 1; }
+          echo "All static web assets verified successfully for GitHub Pages deployment."
