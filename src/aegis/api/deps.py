@@ -1,6 +1,6 @@
 """FastAPI Request Dependencies: Identity Resolution and Context Injection."""
 
-from typing import Optional
+from typing import Any, Optional
 import uuid
 from fastapi import Header, HTTPException, Request, Security, status
 from fastapi.security import APIKeyHeader, HTTPBearer
