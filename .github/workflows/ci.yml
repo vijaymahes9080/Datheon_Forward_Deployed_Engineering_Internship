@@ -9,6 +9,8 @@ on:
 jobs:
   verify-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -24,7 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .
-          pip install pytest pytest-asyncio prometheus_client
+          pip install pytest pytest-asyncio prometheus_client reportlab
 
       - name: Run Complete Test Suite (20 Test Gates)
         run: |
@@ -35,5 +37,13 @@ jobs:
           test -f docs/index.html || { echo "docs/index.html missing"; exit 1; }
           test -f docs/styles.css || { echo "docs/styles.css missing"; exit 1; }
           test -f docs/app.js || { echo "docs/app.js missing"; exit 1; }
+          test -f docs/.nojekyll || { echo "docs/.nojekyll missing"; exit 1; }
           test -f docs/assets/aegis_hero_banner.png || { echo "Hero banner asset missing"; exit 1; }
           echo "All static web assets verified successfully for GitHub Pages deployment."
+
+      - name: Deploy to GitHub Pages Branch
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
