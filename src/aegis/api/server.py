@@ -92,8 +92,10 @@ def create_app() -> FastAPI:
                 content={"error": "INTERNAL_SERVER_ERROR", "message": "An internal error occurred."},
             )
 
-    # Mount base health and metrics router
+    # Mount routers
     app.include_router(health.router)
+    from aegis.api.routes import ingest
+    app.include_router(ingest.router)
 
     return app
 
