@@ -1,0 +1,11 @@
+sku,product_name,category,stock_quantity,reorder_threshold,unit_price,warehouse_location
+SKU-INV-1001,Edge Gateway Appliance Gen4,Hardware,142,25,1299.00,Zone-A-Rack-12
+SKU-INV-1002,Optical Transceiver 100G QSFP28,Networking,420,50,185.50,Zone-B-Rack-04
+SKU-INV-1003,Industrial PoE Switch 24-Port,Hardware,78,15,649.00,Zone-A-Rack-18
+SKU-INV-1004,Thermal Sensor Module RS485,Sensors,650,100,42.00,Zone-C-Bin-08
+SKU-INV-1005,Secure Enclave Hardware Module,Security,88,20,899.00,Vault-Alpha-01
+SKU-INV-1006,High-Gain Cellular Antenna 5G,Networking,310,40,79.00,Zone-B-Rack-09
+SKU-INV-1007,Embedded Neural Compute Card,Hardware,54,12,1850.00,Zone-A-Rack-02
+SKU-INV-1008,Backup Power Supply Unit 850W,Power,115,20,220.00,Zone-D-Pallet-03
+SKU-INV-1009,Vibration Monitoring Node,Sensors,230,30,115.00,Zone-C-Bin-14
+SKU-INV-1010,Fiber Patch Cable Duplex LC 5m,Cabling,1200,200,14.50,Zone-B-Bin-22
